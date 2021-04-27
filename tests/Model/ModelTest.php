@@ -21,7 +21,7 @@ class ModelTest extends TestCase
             $filename = $fileInfo->getFileName();
             $classname = explode(".", $filename)[0];
             if ($classname != null) {
-                $class = "Microsoft\\Graph\\Model\\" . explode(".", $fileInfo->getFileName())[0];
+                $class = "Microsoft\\Graph\\Model\\" . $classname;
                 switch(get_parent_class($class)) {
                     case Model\Entity::class:
                         $this->entities[] = $class;
@@ -60,21 +60,6 @@ class ModelTest extends TestCase
         }
     }
 
-    public function testInvalidEnum()
-    {
-        $this->expectException(Microsoft\Graph\Exception\GraphException::class);
-
-        $enum = new TestEnum("test");
-    }
-
-    public function testValidEnum()
-    {
-        $enum = new TestEnum("0");
-
-        $this->assertFalse($enum->is("1"));
-        $this->assertEquals("0", $enum->value());
-    }
-
     public function testSetObject()
     {
         $drive = new Model\Drive();
@@ -87,8 +72,3 @@ class ModelTest extends TestCase
     }
 }
 
-class TestEnum extends Enum {
-
-    const TEST = "0";
-    const TEST1 = "1";
-}
